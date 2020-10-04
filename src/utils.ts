@@ -1,6 +1,10 @@
 import { Context } from "vm";
-
 import { MatchDetails, Innings } from "./index";
+
+const font = "Arial";
+
+const teamSizeRatio = 20;
+
 export const writeHeader = (
   ctx: Context,
   matchDetails: MatchDetails,
@@ -10,7 +14,7 @@ export const writeHeader = (
   width: number,
 ) => {
   const headerFontSize = width / 15;
-  ctx.font = `800 ${headerFontSize}px Arial`;
+  ctx.font = `800 ${headerFontSize}px ${font}`;
   ctx.textAlign = "center";
   const matchString =
     `${matchDetails.teamName} ${matchDetails.venue} v ${matchDetails.oppoName}`;
@@ -35,17 +39,41 @@ export const writeInnings = (
   height: number,
   width: number,
 ) => {
-  const headerFontSize = width / 20;
-  ctx.font = `600 ${headerFontSize}px Arial`;
+  let fontSize = width / teamSizeRatio;
+  const yStart = y;
+  ctx.font = `600 ${fontSize}px ${font}`;
   ctx.textAlign = "left";
   ctx.fillStyle = "white";
-  y += headerFontSize + headerFontSize / 20;
-  ctx.fillText(innings.team, x + width / 50, y);
+  y += fontSize + fontSize / teamSizeRatio;
+  const xStart = x + width / 50;
+  ctx.fillText(innings.team, xStart, y);
 
   ctx.textAlign = "right";
   const inningsString =
-    `${innings.runs.toString()}-${innings.wickets.toString()}`;
+    `${innings.runs.toString()}-${innings.wickets.toString()}${
+      innings.dec ? " dec" : ""
+    }`;
   ctx.fillText(inningsString, width - (x / 50) - (width / 50), y);
 
-  return y;
+  fontSize = width / 25;
+  ctx.font = `300 ${fontSize}px ${font}`;
+  y += fontSize * 1.5;
+  ctx.fillText(`${innings.overs} overs`, width - (x / 50) - (width / 50), y);
+
+  ctx.textAlign = "left";
+  if (innings.performances) {
+    for (const p of innings.performances) {
+      ctx.fillText(
+        `${p.name} - ${p.performance}`,
+        xStart,
+        y,
+      );
+      y += fontSize * 1.5;
+    }
+  }
+  if (innings.performances && innings.performances.length > 0) {
+    y -= fontSize * 1.5;
+  }
+
+  return y - yStart;
 };

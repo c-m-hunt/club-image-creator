@@ -15,6 +15,12 @@ export interface Innings {
   wickets: number;
   dec: boolean;
   overs: number;
+  performances?: Performance[];
+}
+
+export interface Performance {
+  name: string;
+  performance: string;
 }
 
 export interface ResultDetails {
@@ -23,17 +29,14 @@ export interface ResultDetails {
 
 interface ImageOptions {}
 
-export const teamSheetImage = async (
-  baseImage: string,
-  outputPath: string,
-  matchDetails?: MatchDetails,
-  imageOptions?: ImageOptions,
-): Promise<string> => {
-  // const img = await Jimp.read(baseImage);
-  // await img.resize(255, 255);
-  // await img.write(outputPath);
-  return outputPath;
-};
+// export const teamSheetImage = async (
+//   baseImage: string,
+//   outputPath: string,
+//   matchDetails?: MatchDetails,
+//   imageOptions?: ImageOptions,
+// ): Promise<string> => {
+//   return outputPath;
+// };
 
 export const resultImage = async (
   baseImage: string,
@@ -60,12 +63,13 @@ export const resultImage = async (
 
   ctx.globalAlpha = 0.5;
   ctx.fillStyle = "black";
+
   const contentWidth = width - (2 * tenPC);
   ctx.fillRect(tenPC, y, contentWidth, 1000);
   ctx.stroke();
 
   ctx.globalAlpha = 1;
-  y = writeInnings(
+  const inningsHeight = writeInnings(
     ctx,
     ResultDetails.innings[0],
     tenPC,
@@ -73,7 +77,8 @@ export const resultImage = async (
     height,
     width - (tenPC),
   );
-  y = writeInnings(
+  y += inningsHeight + (inningsHeight / 3);
+  y += writeInnings(
     ctx,
     ResultDetails.innings[1],
     tenPC,
