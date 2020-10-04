@@ -2,7 +2,7 @@
   "name": "typescript-module-boilerplate",
   "version": "2.0.0",
   "scripts": {
-    "test": "yarn jest --detectOpenHandles --watch",
+    "test": "yarn jest --detectOpenHandles --watchAll",
     "typecheck": "yarn tsc --project ./tsconfig-typecheck.json",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "format": "prettier --write 'src/**/*.{ts,tsx}'",
