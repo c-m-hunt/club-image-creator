@@ -29,6 +29,7 @@ export interface ResultDetails {
 
 export interface ImageOptions {
   badgePath?: string;
+  sponsorPath?: string;
 }
 
 // export const teamSheetImage = async (
@@ -99,9 +100,25 @@ export const resultImage = async (
       imgBadge.width,
       imgBadge.height,
       img.width / 20,
-      img.height - (img.width / 5) * aspectRatio - (img.width / 20),
+      img.height - (img.width / 5) / aspectRatio - (img.width / 20),
       img.width / 5,
-      (img.width / 5) * aspectRatio,
+      (img.width / 5) / aspectRatio,
+    );
+  }
+
+  if (imageOptions.sponsorPath) {
+    const imgSponsor = await loadImage(imageOptions.sponsorPath);
+    const aspectRatio = imgSponsor.width / imgSponsor.height;
+    ctx.drawImage(
+      imgSponsor,
+      0,
+      0,
+      imgSponsor.width,
+      imgSponsor.height,
+      img.width - (img.width / 20) - (img.width / 5),
+      img.height - (img.width / 5) / aspectRatio - (img.width / 20),
+      img.width / 5,
+      (img.width / 5) / aspectRatio,
     );
   }
 

@@ -14,7 +14,7 @@ jest.setTimeout(100000);
 
 describe("resultImage", () => {
   it("returns an output image path", async () => {
-    const inImg = path.join(__dirname, "./img/in1.jpg");
+    const inImg = path.join(__dirname, "./img/src/in.jpg");
     const outImg = path.join(__dirname, "./img/out2.jpg");
     const matchDetails = {
       teamName: "2nd XI",
@@ -47,7 +47,8 @@ describe("resultImage", () => {
     };
 
     const options: ImageOptions = {
-      badgePath: path.join(__dirname, "./img/badge.png"),
+      badgePath: path.join(__dirname, "./img/src/badge.png"),
+      sponsorPath: path.join(__dirname, "./img/src/sponsor.jpeg"),
     };
 
     const output = await resultImage(
