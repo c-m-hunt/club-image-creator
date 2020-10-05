@@ -1,5 +1,5 @@
 import path from "path";
-import { resultImage, ResultDetails } from "../index";
+import { resultImage, ResultDetails, ImageOptions } from "../index";
 
 jest.setTimeout(100000);
 
@@ -46,11 +46,16 @@ describe("resultImage", () => {
       }],
     };
 
+    const options: ImageOptions = {
+      badgePath: path.join(__dirname, "./img/badge.png"),
+    };
+
     const output = await resultImage(
       inImg,
       outImg,
       matchDetails,
       resultDetails,
+      options,
     );
     expect(output).toEqual(outImg);
   });

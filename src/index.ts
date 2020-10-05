@@ -27,7 +27,9 @@ export interface ResultDetails {
   innings: [Innings, Innings];
 }
 
-interface ImageOptions {}
+export interface ImageOptions {
+  badgePath?: string;
+}
 
 // export const teamSheetImage = async (
 //   baseImage: string,
@@ -86,6 +88,22 @@ export const resultImage = async (
     height,
     width - (tenPC),
   );
+
+  if (imageOptions.badgePath) {
+    const imgBadge = await loadImage(imageOptions.badgePath);
+    const aspectRatio = imgBadge.width / imgBadge.height;
+    ctx.drawImage(
+      imgBadge,
+      0,
+      0,
+      imgBadge.width,
+      imgBadge.height,
+      img.width / 20,
+      img.height - (img.width / 5) * aspectRatio - (img.width / 20),
+      img.width / 5,
+      (img.width / 5) * aspectRatio,
+    );
+  }
 
   fs.writeFileSync(outputPath, canvas.toBuffer());
 
